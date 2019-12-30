@@ -5,7 +5,8 @@ class Santa(
     private val firstName: String,
     val mail: String,
     val forbiddenGifts: List<String> = emptyList(),
-    val receiver: String = "") {
+    val receiver: String = "",
+    val wishList: List<String> = emptyList()) {
 
 
     fun getName(): String {

@@ -1,0 +1,23 @@
+buildscript {
+    ext.ktor_version = '1.2.4'
+    ext.jackson_version = '2.9.8'
+    ext.mockk_version = "1.9.3"
+    ext.logback_version = "1.2.3"
+}
+
+apply plugin: 'application'
+
+mainClassName = "io.ktor.server.netty.DevelopmentEngine"
+
+dependencies {
+    implementation project(':secret_santa_core')
+    compile "io.ktor:ktor-server-core:$ktor_version"
+    compile "io.ktor:ktor-server-netty:$ktor_version"
+    compile "io.ktor:ktor-jackson:$ktor_version"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version"
+    compile("ch.qos.logback:logback-classic:$logback_version")
+    testCompile("io.ktor:ktor-server-test-host:$ktor_version") {
+        exclude group: 'junit', module: 'junit' //Ktor server test has embeded Junit 4.12, we want to use Junit 5
+    }
+    testCompile "io.mockk:mockk:$mockk_version" //Ktor prefers mockk to mock :/
+}

@@ -1,7 +1,6 @@
 package com.apoichet.santa
 
 import com.apoichet.santa.validator.*
-import java.lang.IllegalStateException
 
 class SecretSantaBuilder(private val validators: List<SantaValidator> = listOf(
     EnoughSanta(1, "Not enough Santa"),
@@ -15,13 +14,14 @@ class SecretSantaBuilder(private val validators: List<SantaValidator> = listOf(
     NotUnknownSantaReceiver(9, "Unknown santa receiver")
 )) {
 
-    fun buildFrom(santaList: List<Santa>): List<SecretSantaResult> {
+    fun buildFrom(santaList: List<Santa>): List<SecretSantaResult>? {
         validators.forEach { it.validate(santaList) }
         val notYetReceiveGift: List<String> = santaList.map { it.getName() } - santaList.map { it.receiver }
         val santaWithoutReceivers: List<Santa> = santaList.filter { it.receiver.isBlank() }
-        val santaWithReceiver: List<SecretSantaResult> = buildSantaWithReceiverList(santaList)
-        val result: List<SecretSantaResult> = buildResult(santaWithoutReceivers, notYetReceiveGift) ?: throw IllegalStateException()
-        return santaWithReceiver + result
+        buildResult(santaWithoutReceivers, notYetReceiveGift)?.let {
+            return buildSantaWithReceiverList(santaList) + it
+        }
+        return null
     }
 
     private fun buildSantaWithReceiverList(santaList: List<Santa>): List<SecretSantaResult> {
@@ -41,6 +41,7 @@ class SecretSantaBuilder(private val validators: List<SantaValidator> = listOf(
         val filtered = notYetReceiveGift
             .filter { it != source.getName() }
             .filter { it !in source.forbiddenGifts }
+            .shuffled()
 
         if (filtered.isEmpty()) return null
 

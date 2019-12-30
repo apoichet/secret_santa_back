@@ -2,12 +2,11 @@ package com.apoichet.santa
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class SecretSantaBuilderTest {
 
     @Test
-    fun `should have just as many pairs in result as santa input` (){
+    fun `should have just as many pairs in result? as santa input` (){
         //Given
         val santaList  = listOf(
             givenFakeSanta("Toto"),
@@ -17,7 +16,7 @@ internal class SecretSantaBuilderTest {
         //When
         val result = SecretSantaBuilder().buildFrom(santaList)
         //Then
-        assertThat(result.size).isEqualTo(santaList.size)
+        assertThat(result?.size).isEqualTo(santaList.size)
     }
 
     @Test
@@ -31,7 +30,7 @@ internal class SecretSantaBuilderTest {
         //When
         val result = SecretSantaBuilder().buildFrom(santaList)
         //Then
-        assertThat(result.groupBy { it.receiver }.keys).containsAll(santaList.map { it.getName() })
+        assertThat(result?.groupBy { it.receiver }?.keys).containsAll(santaList.map { it.getName() })
     }
 
     @Test
@@ -45,7 +44,7 @@ internal class SecretSantaBuilderTest {
         //When
         val result = SecretSantaBuilder().buildFrom(santaList)
         //Then
-        assertThat(result.groupBy { it.giver }.keys).containsAll(santaList.map { it.getName() })
+        assertThat(result?.groupBy { it.giver }?.keys).containsAll(santaList.map { it.getName() })
     }
 
     @Test
@@ -62,7 +61,7 @@ internal class SecretSantaBuilderTest {
         //When
         val result = SecretSantaBuilder().buildFrom(santaList)
         //Then
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Toto Toto", "Tam Tam"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Toto Toto", "Tam Tam"))
     }
 
     @Test
@@ -76,10 +75,10 @@ internal class SecretSantaBuilderTest {
         //When
         val result = SecretSantaBuilder().buildFrom(santaList)
         //Then
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Toto Toto", "Tam Tam"))
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Tim Tim", "Tom Tom"))
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Tom Tom", "Toto Toto"))
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Tam Tam", "Tim Tim"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Toto Toto", "Tam Tam"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Tim Tim", "Tom Tom"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Tom Tom", "Toto Toto"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Tam Tam", "Tim Tim"))
     }
 
     @Test
@@ -93,10 +92,10 @@ internal class SecretSantaBuilderTest {
         //When
         val result = SecretSantaBuilder().buildFrom(santaList)
         //Then
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Toto Toto", "Tim Tim"))
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Tim Tim", "Tom Tom"))
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Tom Tom", "Tam Tam"))
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Tam Tam", "Toto Toto"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Toto Toto", "Tim Tim"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Tim Tim", "Tom Tom"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Tom Tom", "Tam Tam"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Tam Tam", "Toto Toto"))
     }
 
     @Test
@@ -110,14 +109,14 @@ internal class SecretSantaBuilderTest {
         //When
         val result = SecretSantaBuilder().buildFrom(santaList)
         //Then
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Toto Toto", "Tim Tim"))
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Tim Tim", "Tom Tom"))
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Tom Tom", "Tam Tam"))
-        assertThat(result.map { Pair(it.giver, it.receiver) }).contains(Pair("Tam Tam", "Toto Toto"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Toto Toto", "Tim Tim"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Tim Tim", "Tom Tom"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Tom Tom", "Tam Tam"))
+        assertThat(result?.map { Pair(it.giver, it.receiver) }).contains(Pair("Tam Tam", "Toto Toto"))
     }
 
     @Test
-    fun `should reject when no solution found` (){
+    fun `should return null when no solution found` (){
         //Given
         val santaList  = listOf(
             givenFakeSanta("Toto", "Tim"),
@@ -125,9 +124,9 @@ internal class SecretSantaBuilderTest {
             givenFakeSanta("Tom", "Tam"),
             givenFakeSanta("Tam", listOf("Tim Tim", "Toto Toto")))
         //When
-        assertThrows<IllegalStateException> {
-            SecretSantaBuilder().buildFrom(santaList)
-        }
+        val result = SecretSantaBuilder().buildFrom(santaList)
+        //Then
+        assertThat(result).isNull()
     }
 
     private fun givenFakeSanta(name: String): Santa {

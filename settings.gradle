@@ -1,2 +1,5 @@
-rootProject.name = 'secret_santa_back'
+rootProject.name = 'secret_santa'
+
+include 'secret_santa_core'
+include 'secret_santa_api_ktor'
 
