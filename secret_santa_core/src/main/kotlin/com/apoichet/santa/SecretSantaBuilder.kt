@@ -29,7 +29,7 @@ class SecretSantaBuilder(private val validators: List<SantaValidator> = listOf(
             .filter { it.receiver.isNotBlank() }
             .map { SecretSantaResult(
                 giver = it.getName(),
-                mailGiver = it.mail,
+                emailGiver = it.email,
                 receiver = it.receiver) }
     }
 
@@ -50,7 +50,7 @@ class SecretSantaBuilder(private val validators: List<SantaValidator> = listOf(
             if(result != null) {
                 return result + SecretSantaResult(
                     giver = source.getName(),
-                    mailGiver = source.mail,
+                    emailGiver = source.email,
                     receiver = it)
             }
         }

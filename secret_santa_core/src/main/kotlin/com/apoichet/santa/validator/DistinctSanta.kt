@@ -13,7 +13,7 @@ class DistinctSanta(codeError: Int = 0, msgError: String = "") : SantaValidator(
     }
 
     private fun singleSantaMail(santaList: List<Santa>): Boolean {
-        return santaList.groupBy{it.mail}
+        return santaList.groupBy{it.email}
             .none{ it.value.size > 1}
     }
 }
