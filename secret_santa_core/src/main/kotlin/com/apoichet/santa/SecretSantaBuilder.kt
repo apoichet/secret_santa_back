@@ -11,7 +11,8 @@ class SecretSantaBuilder(private val validators: List<SantaValidator> = listOf(
     DistinctForbiddenSanta(6, "Duplicate santa in same forbidden gifts"),
     DistinctSantaReceiver(7, "Duplicate santa in receivers"),
     NotEqualSantaAndReceiver(8, "Santa and receiver have same name"),
-    NotUnknownSantaReceiver(9, "Unknown santa receiver")
+    NotUnknownSantaReceiver(9, "Unknown santa receiver"),
+    ForbiddenSantaNotContainsReceiverSanta(10, "In single santa, forbidden santa contains receiver santa")
 )) {
 
     fun buildFrom(santaList: List<Santa>): List<SecretSantaResult>? {
