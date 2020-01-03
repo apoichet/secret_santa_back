@@ -10,11 +10,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
-import io.ktor.features.Compression
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
-import io.ktor.features.StatusPages
+import io.ktor.features.*
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.JacksonConverter
 import io.ktor.response.respond
@@ -31,6 +29,10 @@ fun Application.mainWithDependencies(
 ) {
     install(DefaultHeaders)
     install(Compression)
+    install(CORS) {
+        header(HttpHeaders.AccessControlAllowOrigin)
+        anyHost()
+    }
     installMapper()
 
     val logger = LoggerFactory.getLogger("Application")
